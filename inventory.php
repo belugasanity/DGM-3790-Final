@@ -1,5 +1,27 @@
 <?php
 require_once('security.php');
+
+
+//BUILD CONNECTION TO DB - localhost means it's on the same server
+    $databaseConnect = mysqli_connect('45.40.164.71', 'dgm3790', 'October2017!', 'dgm3790') or die('Could not connect to Database');
+
+
+    //BUILD THE QUERY
+    $query = "SELECT * FROM products ORDER BY name ASC"; //no ID because it will auto increment in the DB
+
+
+    //WORK WITH THE DB
+    $result = mysqli_query($databaseConnect, $query) or die('Query failed!');
+
+        //ADD RESULT TO A VARIABLE
+    $found = mysqli_fetch_array($result);
+
+
+    //CLOSE CONNECTION
+    mysqli_close($databaseConnect);
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,18 +73,16 @@ require_once('security.php');
 
     	<div class="row">
             <div class="col-xs-12 col-sm-6 col-sm-offset-3">
-                <form action="<?php $SERVER['PHP_SELF']; ?>" method="POST" name="checkoutForm">  
-
-
-                    <p>The potato gun product and amount will be displayed here with a numeric box that you can use to add or subtract items from the warehouse.</p>
+                <form action="inventoryUpdate.php" method="POST" name="checkoutForm">  
+                                       
+                    <?php
+                        echo '<h3>Name: <input type="text" name="itemName" value="'.$found['name'].'"> (ID#'.$found['id'].')</h3>';
+                        echo '<p>Inventory Amount: <input type="number" name="amount" value="'.$found['inventory'].'"><br>';
+                        echo 'Current Price: <input type="number" name="price" value="'.$found['price'].'" ></p>';
+                    ?>
                     
-
-                    
-
-
-                    <input type="submit" value="Add">
-                    <input type="submit" value="Remove">
-                    
+                    <input type="hidden" name="id" value="<?php echo $found['id'];?>">
+                    <input type="submit" value="Update" name="submit">                    
 
                 </form>
             </div>            

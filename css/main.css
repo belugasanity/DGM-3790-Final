@@ -45,3 +45,22 @@ h6 {
 input {
 	color: #ad743c;
 }
+
+
+
+
+/*Orders Page*/
+
+tr.fulfilled{
+	background-color: #A6B07E;
+}
+
+tr.unfulfilled{
+	background-color: #965A59;
+}
+
+td {
+	padding: 0px 5px;
+	font-size: 12px;
+	border-bottom: 1px solid black;
+}

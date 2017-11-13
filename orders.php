@@ -1,5 +1,6 @@
 <?php
 require_once('security.php');
+require_once('connection.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,20 +51,93 @@ require_once('security.php');
 
 
     	<div class="row">
-            <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+            <div class="col-xs-12">
                 <form action="<?php $SERVER['PHP_SELF']; ?>" method="POST" name="checkoutForm">  
+                <?php 
 
+                    // Update records
+                        if(isset($_POST['submit'])){
+                            foreach ($_POST['orders'] as $orders_id) {
+                                $query = "UPDATE orders SET is_active=0 WHERE id=$orders_id";
 
-                    <p>Information here will be pulled from the DB and formatted with PHP. Needed info: Checkbox, Name, shipping address, status (fulfilled or pending). The checkbox can be selected and the form submitted to fulfill orders.</p>
+                                $result = mysqli_query($con, $query) or die('Query has failed to update records');
+                            };
+                        };
+
+                    // Get Records
+                    $query = "SELECT * FROM orders ORDER BY is_active DESC";
+
+                    // TT Database
+                    $result = mysqli_query($con, $query) or die('query has failed for pulling orders');
+
+                    // display Records
+                    echo '<table>
+                     <tr>
+                            <td></td>
+                            <td>First Name</td>
+                            <td>Last Name</td>
+                            <td>Billing address</td>
+                            <td>Shipping address</td>
+                            <td>Amount</td>
+                            <td>Quantity</td>
+                            <td>Shipping Status</td>
+                            <td>Payment Status</td>
+                            <td>Product ID</td>
+                            <td>Fulfilled?</td>
+                        </tr>
+
+                    ';
+                    while ($row = mysqli_fetch_array($result)) {
+                        if($row['is_active'] == 0){
+                        echo '<label>
+
+                        <tr class="fulfilled"><td></td>'
+                        .'<td>'.$row['Bfirstname']. '</td> '
+                        .'<td>'.$row['Blastname']. '</td> ' 
+                        .'<td>'.$row['billing_address']. '</td> '
+                        .'<td>'.$row['shipping_address']. '</td> '
+                        .'<td>$'.$row['billing_amount']. '.00</td> '
+                        .'<td>'.$row['quantity']. '</td> '
+                        .'<td>'.$row['shipping_status']. '</td> '
+                        .'<td>'.$row['payment_status']. '</td> '
+                        .'<td>'.$row['product_id']. '</td> '
+                        .'<td>Yes</td> '
+                        .'<td>'.'</label>'.
+                        '</tr>'
+                      ;
+                    }
+                    else{
+                       echo '<label>
+                        <tr class="unfulfilled">
+                        <td><input type="checkbox" 
+                        value="'.$row['id'].'" name="orders[]" /></td>'
+                        .'<td>'.$row['Bfirstname']. '</td> '
+                        .'<td>'.$row['Blastname']. '</td> ' 
+                        .'<td>'.$row['billing_address']. '</td> '
+                        .'<td>'.$row['shipping_address']. '</td> '
+                        .'<td>$'.$row['billing_amount']. '.00</td> '
+                        .'<td>'.$row['quantity']. '</td> '
+                        .'<td>'.$row['shipping_status']. '</td> '
+                        .'<td>'.$row['payment_status']. '</td> '
+                        .'<td>'.$row['product_id']. '</td> '
+                        .'<td>No</td> '
+                        .'<td>'.'</label>'.
+                        '</tr>'
+                      ; 
+                    }
+                    };
+                    echo '</table>';
+                ?>
                     
 
                     
 
 
-                    <input type="submit" value="Fulfill">
+                    <input type="submit" value="Fulfill" name="submit">
                     
 
                 </form>
+                
             </div>            
         </div>
 
