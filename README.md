@@ -1,1 +1,2 @@
-DGM-3790-Final
+# shopping-cart
+Shopping cart project
