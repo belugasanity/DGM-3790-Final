@@ -21,6 +21,7 @@ if (isset($_POST['submit'])) {
 
       //setcookie('email', $row['email'], time() + (60*60*24*30));
     $_SESSION['login'] = $email;
+    $_SESSION['LAST_ACTIVITY'] = time();
       header('Location:orders.php');
     
   }else{
