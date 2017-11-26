@@ -1,24 +1,28 @@
 <?php
 require_once('security.php');
-
-
-//BUILD CONNECTION TO DB - localhost means it's on the same server
-    $databaseConnect = mysqli_connect('45.40.164.71', 'dgm3790', 'October2017!', 'dgm3790') or die('Could not connect to Database');
-
-
+require_once('connection.php');
+$user = $_SESSION['login'];
+$query1 = "SELECT * FROM users WHERE email='$user'";
+$result1 = mysqli_query($con, $query1) or die('Query 1 failed');
+$permission = mysqli_fetch_array($result1);
+if($permission['permission'] < 2){
+    echo "you don't have permission to view this page";
+    exit();
+}else{
     //BUILD THE QUERY
     $query = "SELECT * FROM products ORDER BY name ASC"; //no ID because it will auto increment in the DB
 
 
     //WORK WITH THE DB
-    $result = mysqli_query($databaseConnect, $query) or die('Query failed!');
+    $result = mysqli_query($con, $query) or die('Query failed!');
 
         //ADD RESULT TO A VARIABLE
     $found = mysqli_fetch_array($result);
 
 
     //CLOSE CONNECTION
-    mysqli_close($databaseConnect);
+    mysqli_close($con);
+}
 
 
 
