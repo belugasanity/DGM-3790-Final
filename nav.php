@@ -9,6 +9,7 @@
 	      		echo '<li><a href="orders.php">Orders</a></li>';
 	      		echo '<li><a href="inventory.php">Inventory</a></li>';
 	      		echo '<li><a href="logout.php">Logout</a></li>';
+	      		echo '<li><a href="#">'.$_SESSION['login'].'</a></li>';
 	      	}
 	      ?>
 	    </ul>

@@ -5,24 +5,7 @@ $user = $_SESSION['login'];
 $query1 = "SELECT * FROM users WHERE email='$user'";
 $result1 = mysqli_query($con, $query1) or die('Query 1 failed');
 $permission = mysqli_fetch_array($result1);
-if($permission['permission'] < 2){
-    echo "you don't have permission to view this page";
-    exit();
-}else{
-    //BUILD THE QUERY
-    $query = "SELECT * FROM products ORDER BY name ASC"; //no ID because it will auto increment in the DB
 
-
-    //WORK WITH THE DB
-    $result = mysqli_query($con, $query) or die('Query failed!');
-
-        //ADD RESULT TO A VARIABLE
-    $found = mysqli_fetch_array($result);
-
-
-    //CLOSE CONNECTION
-    mysqli_close($con);
-}
 
 
 
@@ -78,15 +61,52 @@ if($permission['permission'] < 2){
     	<div class="row">
             <div class="col-xs-12 col-sm-6 col-sm-offset-3">
                 <form action="inventoryUpdate.php" method="POST" name="checkoutForm">  
-                                       
                     <?php
-                        echo '<h3>Name: <input type="text" name="itemName" value="'.$found['name'].'"> (ID#'.$found['id'].')</h3>';
-                        echo '<p>Inventory Amount: <input type="number" name="amount" value="'.$found['inventory'].'"><br>';
-                        echo 'Current Price: <input type="number" name="price" value="'.$found['price'].'" ></p>';
+                        if($permission['permission'] < 2){
+                            echo "You don't have permission to view this page";
+                            exit();
+                        }elseif ($permission['permission'] == 3) {
+                            //BUILD THE QUERY
+                            $query = "SELECT * FROM products ORDER BY name ASC"; //no ID because it will auto increment in the DB
+
+
+                            //WORK WITH THE DB
+                            $result = mysqli_query($con, $query) or die('Query failed!');
+
+                                //ADD RESULT TO A VARIABLE
+                            $found = mysqli_fetch_array($result);
+
+
+                            //CLOSE CONNECTION
+                            mysqli_close($con);
+                        
+                            echo '<h3>Name: <input type="text" name="itemName" value="'.$found['name'].'"> (ID#'.$found['id'].')</h3>';
+                            echo '<p>Inventory Amount: <input type="number" name="amount" value="'.$found['inventory'].'"></p>';
+                            echo '<p>Current Price: <input type="number" name="price" value="'.$found['price'].'" ></p>';
+                        }
+                        else{
+                            //BUILD THE QUERY
+                            $query = "SELECT * FROM products ORDER BY name ASC"; //no ID because it will auto increment in the DB
+
+
+                            //WORK WITH THE DB
+                            $result = mysqli_query($con, $query) or die('Query failed!');
+
+                                //ADD RESULT TO A VARIABLE
+                            $found = mysqli_fetch_array($result);
+
+
+                            //CLOSE CONNECTION
+                            mysqli_close($con);
+                        
+                        echo '<h3>Name: <input readonly type="text" name="itemName" value="'.$found['name'].'"> (ID#'.$found['id'].')</h3>';
+                        echo '<p>Inventory Amount: <input readonly type="number" name="amount" value="'.$found['inventory'].'"></p>';
+                        echo '<p>Current Price: <input readonly type="number" name="price" value="'.$found['price'].'" ></p>';
+                        }//end else
                     ?>
                     
                     <input type="hidden" name="id" value="<?php echo $found['id'];?>">
-                    <input type="submit" value="Update" name="submit">                    
+                    <input type="submit" value="Update" name="submit">                   
 
                 </form>
             </div>            

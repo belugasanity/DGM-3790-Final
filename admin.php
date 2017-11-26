@@ -83,7 +83,7 @@ if (isset($_POST['submit'])) {
                     <label>Username:<br>
                     <input type="text" name="email" value="BobShmo101@me.com"></label>
                     <label>Password:<br>
-                    <input type="text" name="pass1" value="test123"></label>
+                    <input type="password" name="pass1" value="test123"></label>
                     <input type="submit" value="Log In" name="submit">
                 </form>
                 <?php echo $feedback; ?>
