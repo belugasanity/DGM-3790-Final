@@ -14,8 +14,8 @@ if(!isset($_SESSION['login'])){
 
 if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 120)) {
     // last request was more than 2 minutes ago
-    session_unset();     // unset $_SESSION variable for the run-time 
-    session_destroy();   // destroy session data in storage
+    session_unset();     // unset $_SESSION 
+    session_destroy();   // destroy session data
     header('Location: admin.php');
 }
 $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time stamp
